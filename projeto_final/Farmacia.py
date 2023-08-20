@@ -62,6 +62,18 @@ class Farmacia:
         medicamento = MedicamentoQuimioterapico(nome, fabricante, descricao, preco)
         self.medicamentos.append(medicamento)
         print(f'Medicamento quimioterápico {nome} cadastrado com sucesso!')
+        
+    def exibir_medicamentos_cadastrados(self):
+        print('--- Medicamentos Cadastrados ---')
+        for medicamento in self.medicamentos:
+            print('---')
+            print(f'Nome: {medicamento.nome}')
+            print(f'Fabricante: {medicamento.fabricante}')
+            print(f'Descrição: {medicamento.descricao}')
+            print(f'Tipo: {medicamento.tipo}')
+            if isinstance(medicamento, MedicamentoQuimioterapico):
+                receita = 'Sim' if medicamento.vendido_com_receita else 'Não'
+                print(f'Requer receita: {receita}')
 
     def buscar_medicamento(self, termo_busca):
         resultados = []
@@ -157,14 +169,30 @@ def exibir_menu():
     print('2 - Buscar cliente por CPF')
     print('3 - Cadastrar medicamento fitoterápico')
     print('4 - Cadastrar medicamento quimioterápico')
-    print('5 - Buscar medicamento por termo')
-    print('6 - Realizar venda')
-    print('7 - Emitir relatórios')
-    print('8 - Sair')
+    print('5 - Exibir lista medicamentos')
+    print('6 - Buscar medicamento por termo')
+    print('7 - Realizar venda')
+    print('8 - Emitir relatórios')
+    print('9 - Sair')
 
 
 # Instanciando a farmácia
 farmacia = Farmacia()
+
+# Criando alguns medicamentos e adicionando-os à farmácia
+medicamento_fitoterapico1 = MedicamentoFitoterapico("Chá de Camomila", "Fitoplant", "Infusão de flores de camomila", 5.0)
+medicamento_fitoterapico2 = MedicamentoFitoterapico("Xarope de Guaco", "Naturmed", "Xarope expectorante de guaco", 15.0)
+farmacia.medicamentos.append(medicamento_fitoterapico1)
+farmacia.medicamentos.append(medicamento_fitoterapico2)
+
+medicamento_quimioterapico1 = MedicamentoQuimioterapico("Cisplatina", "MedChem", "Agente quimioterápico", 50.0, True)
+medicamento_quimioterapico2 = MedicamentoQuimioterapico("Paclitaxel", "PharmaCorp", "Agente quimioterápico", 75.0, False)
+medicamento_quimioterapico3 = MedicamentoQuimioterapico("Doxorrubicina", "MedPharma", "Agente quimioterápico", 65.0, False)
+medicamento_quimioterapico4 = MedicamentoQuimioterapico("Vincristina", "OncologyCorp", "Agente quimioterápico", 80.0, True)
+farmacia.medicamentos.append(medicamento_quimioterapico1)
+farmacia.medicamentos.append(medicamento_quimioterapico2)
+farmacia.medicamentos.append(medicamento_quimioterapico3)
+farmacia.medicamentos.append(medicamento_quimioterapico4)
 
 # Loop principal
 remedio_mais_vendido = None
@@ -197,9 +225,11 @@ while True:
         vendido_com_receita = input('Vendido com receita (S/N): ').lower() == 's'
         farmacia.cadastrar_medicamento_quimioterapico(nome, fabricante, descricao, preco, vendido_com_receita)
     elif opcao == '5':
+        farmacia.exibir_medicamentos_cadastrados()
+    elif opcao == '6':
         termo_busca = input('Digite o termo de busca: ')
         farmacia.buscar_medicamento(termo_busca)
-    elif opcao == '6':
+    elif opcao == '7':
         cpf_cliente = input('Digite o CPF do cliente: ')
         num_medicamentos = int(input('Quantidade de medicamentos a serem vendidos: '))
         lista_medicamentos = []
@@ -208,12 +238,14 @@ while True:
             lista_medicamentos.append(Medicamento(nome_medicamento, '', '', ''))
 
         farmacia.realizar_venda(cpf_cliente, lista_medicamentos)
-    elif opcao == '7':
+    elif opcao == '8':
         farmacia.emitir_relatorio_clientes()
         farmacia.emitir_relatorio_medicamentos()
         farmacia.emitir_relatorio_atendimentos(remedio_mais_vendido)
-    elif opcao == '8':
+    elif opcao == '9':
         print('Saindo...')
+        remedio_mais_vendido = max(quantidade_atendimentos, key=quantidade_atendimentos.get, default=None)
+        farmacia.emitir_relatorio_atendimentos(remedio_mais_vendido)
         break
     else:
         print('Opção inválida. Escolha novamente.')
