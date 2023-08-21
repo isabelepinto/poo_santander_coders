@@ -1,6 +1,6 @@
-import laboratorios
-import clientes
-import medicamentos
+from modulos import laboratorios
+from modulos import clientes
+from modulos import medicamentos
 
 
 # Definição da classe Farmacia
@@ -19,7 +19,7 @@ class Farmacia:
     # Método para cadastrar um novo cliente na farmácia
     def cadastrar_cliente(self, nome, cpf, endereco, telefone, data_nascimento):
         if cpf not in self.clientes:
-            cliente = clientes.cliente(nome, cpf, data_nascimento, endereco, telefone)
+            cliente = clientes.Cliente(nome, cpf, data_nascimento, endereco, telefone)
             self.clientes[cpf] = cliente
             print(f'Cliente {nome} cadastrado com sucesso!')
         else:
@@ -27,7 +27,7 @@ class Farmacia:
 
     # Método para cadastrar um novo laboratório
     def cadastrar_laboratorio(self, nome, endereco, telefone, cidade, estado):
-        laboratorio = laboratorios.laboratorio(nome, endereco, telefone, cidade, estado)
+        laboratorio = laboratorios.Laboratorio(nome, endereco, telefone, cidade, estado)
         self.laboratorios.append(laboratorio)
         print(f'Laboratório {nome} cadastrado com sucesso!')
 
